@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "flight-steward",
+  "private_key_id": "8e9a7b619f6c8f0fa5af46068fbbeb74f7ee5c42",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDGHszgfWx8ZzHq\nSbxCXd5BWO8dKKtY9x95xwJB57EBLj/TBZwz1gQhL4BAc0iXJJ8Da/UkD89cIyAK\n7vjXzf3kNNKTIuZu9hz9m7v32HUm38c/qTW33BZOJagCMV1ZB9jJVw2Cz6mKg22N\n4KqqUPGIseL1j4mXaRfJLlVCwqE+zqw41yhgLiuZHxKt/Y1PJJ5WmdKC7FUaSCvN\nQeM1ZO0OHW6sns8qx3QQInnC4LnzRMFJajM/W+qeW26GMnNWG8hqLRAS6rMjZ5QI\n5bUl6LfpUUB1FKWF0asmPxHaDk/FjuIfaqqFFTGYZccKFA1Fhpgwo/vrrzmyH/9a\nyS77zaHPAgMBAAECggEAOJh821ZJAuKx2iVVL7pD7vP6XqCLDj+OEMoeZXhL0rQF\nDIGqRQ6KoHZC02Z7Yp3WBPK2lSYlDMOF+Ema8X8JW8MRMnICVMler73ovNzrXn8H\nmrJ6Q3sOLiXIsFOswG2i6qVBGVC8NHLl/WUkK8IytWNnm9F0szmUz2Y6efdCe7+q\nupcHut6227pi955vvkov2EF+j8nRHazo0qknly6KwgKbpH/mUeJqc2/qU/HCP0St\nRCrmNdAYGcxnvSNHlt+dOjQFujk0VOozXcqKzMSAGffqsOv1oR+YwOn5e9Qbqbn5\nyn0VdfD33IT4G4/n5ZWJTR/YbsCoHXeTgvnjwZairQKBgQDjyHRJWkHAYIsUwGNz\niCPS05ACxZq3cxOs2wm1YFN+NLvuwepnLqab64F+YKYcgV5rzwn9GNQrYNrgzvxl\n3ewD5paCmp727GuAvDkduB2Q3oS3gA9xFQ2wbNoLfLKmXjTj8zdc63Vg2nXm2ZRP\nOBnqVzWxwzV/mWk6nL92AbSUJQKBgQDeqauetVJ6tS4d922ZpBSSnxmNigyjV3iP\nD2Z7pah6Zy7sgiNeBrc2yJ4WFZdX6yKw5EJUEstaYaSM2MYluatOGUE2oQnvQjXu\n/q2i53D1tpYvXdLUJW6GUPgXZgM0OAKE8Dv5JD1ijJplp75z1FfEH0211yd/21XF\nfmLlKIeh4wKBgAoox5756pLU+38KcaUWflqJ2xN0ksj51ffQsScoy7CGU5d7iKPf\nfcjYgScM0nvU/UwbqNtj/xqMMFb0hGdatYsa/r2Gfe6PbuAIBRghPRhYBF1W1dl6\nUej7geIfRqyK6Rr9nwuC6PJP7BBGxgmee/FqwFdUWI9/XSUjFpsByncNAoGBAND3\np6thPLEQzOEuz1t8FBqu2kptnwLFGs4Yg/PTOtT1daJdWFfsMZJmoYbUaJ8IfBxL\nfLxujw6ZyNausvfA0raPGRbt9+bl2rwbpFXYo7jWzQhTI4QaRSolX1CGWsdtMWAW\nHhLqIfoVPuncje8i/+N+BW59KALklBCvVpz+dpxFAoGAVEybzNvMpus0vXBlPmc6\nUnO4WngMBnfdxD+oPuNUgJT6FNon1LfcMpbefwTv7rfFji8+53txPX/IvY6XjuLa\nciWiex9H6XKs8A/744/IKPRISNA5gJDulaO1troELAsOaV/QEkAg/+40MvUU89eO\nWhCC+toGYi6VrtCJeJK2JRs=\n-----END PRIVATE KEY-----\n",
+  "client_email": "steward-boi@flight-steward.iam.gserviceaccount.com",
+  "client_id": "112094181186311808279",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/steward-boi%40flight-steward.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
