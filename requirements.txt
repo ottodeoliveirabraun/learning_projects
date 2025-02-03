@@ -1,0 +1,7 @@
+fake_useragent==2.0.3
+google_api_python_client==2.160.0
+numpy==2.2.2
+pandas==1.5.3
+protobuf==3.20.3
+selenium==4.28.1
+undetected_chromedriver==3.5.5
