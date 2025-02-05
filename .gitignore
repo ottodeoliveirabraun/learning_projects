@@ -1,0 +1,9 @@
+# Ignore service account credentials
+keys.json
+
+# Ignore environment files
+.env
+.infisical.json
+
+# Ignore system files
+.DS_Store
