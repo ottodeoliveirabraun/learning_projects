@@ -3,6 +3,7 @@ name: run real_state
 on:
   schedule:
     - cron: '0 5-19/6 * * *' # At minute 0 past every 2nd hour
+  workflow_dispatch:
 
 # Add the required permissions for OIDC authentication
 permissions:
