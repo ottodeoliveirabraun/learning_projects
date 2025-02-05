@@ -23,7 +23,7 @@ jobs:
 
       - name: Authenticate with Infisical using OIDC
         env:
-          INFISICAL_IDENTITY: "Machine 1"  # Replace with your Infisical Identity name
+          INFISICAL_IDENTITY: "6c8f5f43-4b3b-4bb7-be7f-352f7785848c"  # Replace with your Infisical Identity name
         run: |
           infisical auth login --identity $INFISICAL_IDENTITY --no-interactive
 
