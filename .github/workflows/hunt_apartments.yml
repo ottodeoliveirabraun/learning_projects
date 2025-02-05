@@ -17,7 +17,7 @@ jobs:
 
       - name: Retrieve Secrets from Infisical
         run: |
-          infisical pull -e prod --token=${{ secrets.INFISICAL_TOKEN }}
+          infisical pull -e prod --token=${{ secrets.INFISICAL_TOKEN }} --no-netrc
 
       - name: Decode and Save Google Service Account JSON
         run: |
