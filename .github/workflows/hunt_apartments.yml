@@ -4,6 +4,11 @@ on:
   schedule:
     - cron: '0 5-19/6 * * *' # At minute 0 past every 2nd hour
 
+# Add the required permissions for OIDC authentication
+permissions:
+  id-token: write   # Required to request the JWT from GitHub
+  contents: read    # Needed to access the repository contents
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -15,9 +20,15 @@ jobs:
       - name: Install Infisical CLI
         run: npm install -g infisical
 
+      - name: Authenticate with Infisical using OIDC
+        env:
+          INFISICAL_IDENTITY: "Machine 1"  # Replace with your Infisical Identity name
+        run: |
+          infisical auth login --identity $INFISICAL_IDENTITY --no-interactive
+
       - name: Retrieve Secrets from Infisical
         run: |
-          infisical pull -e prod --token=${{ secrets.INFISICAL_TOKEN }} --no-netrc
+          infisical pull -e prod --no-interactive
 
       - name: Decode and Save Google Service Account JSON
         run: |
