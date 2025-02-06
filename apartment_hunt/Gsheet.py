@@ -6,7 +6,7 @@ import json
 import os
 
 with open("keys.json", "r") as f:
-    SERVICE_ACCOUNT_FILE = json.load(f)
+    SERVICE_ACCOUNT_FILE = f
 
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 #SERVICE_ACCOUNT_FILE = 'keys.json' # When using local keys.json file
