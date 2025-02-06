@@ -21,6 +21,11 @@ jobs:
       - name: Install Infisical CLI
         run: npm install -g infisical
 
+      - name: Debug Environment Variables
+        run: |
+           echo "ID_TOKEN_REQUEST_URL: $ACTIONS_ID_TOKEN_REQUEST_URL"
+           echo "ID_TOKEN_REQUEST_TOKEN: ${#ACTIONS_ID_TOKEN_REQUEST_TOKEN}"
+
       - name: Debug GitHub OIDC Token
         run: |
            curl -sS -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
