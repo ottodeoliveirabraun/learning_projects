@@ -17,7 +17,7 @@ jobs:
      - uses: Infisical/secrets-action@v1.0.7
        with:
             method: "oidc"
-            env-slug: "dev"
+            env-slug: "prod"
             project-slug: "learning-repo-tx-xr"
             identity-id: "6c8f5f43-4b3b-4bb7-be7f-352f7785848c"
 
