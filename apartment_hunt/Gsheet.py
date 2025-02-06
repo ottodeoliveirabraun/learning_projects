@@ -5,18 +5,18 @@ import numpy as np
 import json
 import os
 
-#with open("keys.json", "r") as f:
-    #SERVICE_ACCOUNT_FILE = "keys.json"
-
-SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
-SERVICE_ACCOUNT_FILE = 'keys.json' # When using local keys.json file
-
-creds = None
-creds = service_account.Credentials.from_service_account_file(
-            SERVICE_ACCOUNT_FILE, scopes=SCOPES)
 
 def write(data,target_cell):
+
+    #with open("keys.json", "r") as f:
+    #SERVICE_ACCOUNT_FILE = "keys.json"
+
+    SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
+    SERVICE_ACCOUNT_FILE = 'keys.json' # When using local keys.json file
     
+    creds = None
+    creds = service_account.Credentials.from_service_account_file(
+                SERVICE_ACCOUNT_FILE, scopes=SCOPES)
 
     #print("Pasting data into Gsheets")
 
@@ -41,6 +41,16 @@ def write(data,target_cell):
     #print(request)
 
 def read(tab_code):
+
+    #with open("keys.json", "r") as f:
+    #SERVICE_ACCOUNT_FILE = "keys.json"
+
+    SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
+    SERVICE_ACCOUNT_FILE = 'keys.json' # When using local keys.json file
+    
+    creds = None
+    creds = service_account.Credentials.from_service_account_file(
+                SERVICE_ACCOUNT_FILE, scopes=SCOPES)
 
     # The ID and range of a sample spreadsheet.
     SHEET_ID = '1re7-5x7wF2_kN_sFYXoOQ1or_6FJt7_y7Av2VbGcasY'
