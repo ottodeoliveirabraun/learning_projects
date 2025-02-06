@@ -5,11 +5,11 @@ import numpy as np
 import json
 import os
 
-with open("keys.json", "r") as f:
-    SERVICE_ACCOUNT_FILE = f
+#with open("keys.json", "r") as f:
+    #SERVICE_ACCOUNT_FILE = "keys.json"
 
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
-#SERVICE_ACCOUNT_FILE = 'keys.json' # When using local keys.json file
+SERVICE_ACCOUNT_FILE = 'keys.json' # When using local keys.json file
 
 creds = None
 creds = service_account.Credentials.from_service_account_file(
