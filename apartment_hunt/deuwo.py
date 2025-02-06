@@ -72,6 +72,7 @@ data_df.rename(columns={'ort': 'address.houseNumber'}, inplace=True)
 
 #changing data types
 data_df['price'] = data_df['price'].astype(float)
+data_df['area'] = data_df['area'].astype(float)
 
 columns_ = ['id',
             'price',
