@@ -30,7 +30,7 @@ jobs:
 
      - name: Decode and Save Google Service Account JSON
        run: |
-          echo "$GOOGLE_SERVICE_ACCOUNT_JSON" | base64 --decode > keys.json
+          echo "$GOOGLE_SERVICE_ACCOUNT_JSON" > keys.json
 
      - name: setup python
        uses: actions/setup-python@v4
