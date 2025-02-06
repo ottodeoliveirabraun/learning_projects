@@ -1,3 +1,4 @@
+#This is the 2nd version of the deuwo code because on january 2025 they changed their website/API
 import requests
 import pandas as pd
 import numpy as np
@@ -51,11 +52,14 @@ data_df = data_df.drop(['images',
 
 data_df['date'] = datetime.datetime.now().strftime("%d/%m/%Y")
 
+
+
 data_df['requiresQualificationCertificate'] = data_df['slug'].str.contains(r'\(wbs\)', na=False).astype(int)
 
 data_df['heatingCostsIncluded'] = 0            #data_df['heatingCostsIncluded'].astype(int)  heating costs field was removed
 data_df['level'] = 999
 
+#renaming columns to adhere to old standard
 data_df.rename(columns={'objektnr_extern': 'id'}, inplace=True)
 data_df.rename(columns={'preis': 'price'}, inplace=True)
 data_df.rename(columns={'groesse': 'area'}, inplace=True)
@@ -66,6 +70,8 @@ data_df.rename(columns={'strasse': 'address.street'}, inplace=True)
 data_df.rename(columns={'plz': 'address.zip'}, inplace=True)
 data_df.rename(columns={'ort': 'address.houseNumber'}, inplace=True)
 
+#changing data types
+data_df['area'] = data_df['area'].astype(int)
 
 columns_ = ['id',
             'price',
