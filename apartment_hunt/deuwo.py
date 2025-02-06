@@ -5,33 +5,66 @@ from send_email import send_email
 from Gsheet import write
 from Gsheet import read
 
-url = "https://immo-api.deutsche-wohnen.com/estate/findByFilter"
+import datetime
 
-payload = "{\"infrastructure\":{},\"flatTypes\":{},\"other\":{},\"page\":\"1\",\"locale\":\"de\",\"commercializationType\":\"rent\",\"utilizationType\":\"flat,retirement\",\"location\":\"Berlin\"}"
+url = "https://www.wohnraumkarte.de/api/getImmoList?rentType=miete&city=Berlin&immoType=wohnung&minRooms=Beliebig&floor=Beliebig&bathtub=0&bathwindow=0&bathshower=0&furnished=0&kitchenEBK=0&toiletSeparate=0&disabilityAccess=egal&seniorFriendly=0&balcony=egal&subsidizedHousingPermit=egal&limit=150&offset=0&orderBy=dist_asc&userCookieValue=37cdf01355c3a9e20992dae5340c614e3c1c7b48&dataSet=deuwo"
+
+payload = {}
 headers = {
-  'authority': 'immo-api.deutsche-wohnen.com',
-  'accept': '*/*',
-  'accept-language': 'en-US,en;q=0.9',
-  'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-  'origin': 'https://www.deutsche-wohnen.com',
-  'sec-ch-ua': '"Google Chrome";v="111", "Not(A:Brand";v="8", "Chromium";v="111"',
+  'Accept': '*/*',
+  'Accept-Language': 'en-US,en;q=0.9',
+  'Connection': 'keep-alive',
+  'Origin': 'https://www.deutsche-wohnen.com',
+  'Referer': 'https://www.deutsche-wohnen.com/',
+  'Sec-Fetch-Dest': 'empty',
+  'Sec-Fetch-Mode': 'cors',
+  'Sec-Fetch-Site': 'cross-site',
+  'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36',
+  'sec-ch-ua': '"Not A(Brand";v="8", "Chromium";v="132", "Google Chrome";v="132"',
   'sec-ch-ua-mobile': '?0',
-  'sec-ch-ua-platform': '"Windows"',
-  'sec-fetch-dest': 'empty',
-  'sec-fetch-mode': 'cors',
-  'sec-fetch-site': 'same-site',
-  'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36'
+  'sec-ch-ua-platform': '"macOS"',
+  'Cookie': 'PHPSESSID=7gr0vh4d4q8v2e8jfcr6l5esh2'
 }
+
+response = requests.get(url, params=payload, headers=headers)
+
+print(response.url)  # This will show the full request URL with params
+print("json response BELLOW-------------------")
+print(response.json())  # Assuming the response is in JSON format
 #get the response from the website
 response = requests.request("POST", url, headers=headers, data=payload)
 #get the data from the response in json
 data = response.json()
 #normalize the json data into a dataframe object and to some cleaning
-data_df = pd.json_normalize(data)
-data_df = data_df.drop(['images'], axis = 1)
-data_df = data_df.replace(np.nan,0)
-data_df['requiresQualificationCertificate'] = data_df['requiresQualificationCertificate'].astype(int)
+data_df = pd.DataFrame(data["results"])
+data_df = data_df.drop(['images',
+                        'titel',
+                        'tour_link_360',
+                        'wrk_id',
+                        'land',
+                        'vermarktungsart_miete',
+                        'has_video',
+                        'preview_img_url',
+                        ], axis = 1)
+
+#print(data_df)
+
+data_df['date'] = datetime.datetime.now().strftime("%d/%m/%Y")
+
+data_df['requiresQualificationCertificate'] = data_df['slug'].str.contains(r'\(wbs\)', na=False).astype(int)
+
 data_df['heatingCostsIncluded'] = 0            #data_df['heatingCostsIncluded'].astype(int)  heating costs field was removed
+data_df['level'] = 999
+
+data_df.rename(columns={'objektnr_extern': 'id'}, inplace=True)
+data_df.rename(columns={'preis': 'price'}, inplace=True)
+data_df.rename(columns={'groesse': 'area'}, inplace=True)
+data_df.rename(columns={'anzahl_zimmer': 'rooms'}, inplace=True)
+data_df.rename(columns={'lat': 'geoLocation.latitude'}, inplace=True)
+data_df.rename(columns={'lon': 'geoLocation.longitude'}, inplace=True)
+data_df.rename(columns={'strasse': 'address.street'}, inplace=True)
+data_df.rename(columns={'plz': 'address.zip'}, inplace=True)
+data_df.rename(columns={'ort': 'address.houseNumber'}, inplace=True)
 
 
 columns_ = ['id',
@@ -125,7 +158,7 @@ for index, row in merge_df.iterrows():
         #print(url_base + row['id'],'sophiagarmatsch@gmail.com')
         count_bubu = count_bubu + 1 
     if row['email.sent_y'] == 0 and row['matias_flag'] == 1:    
-        send_email(url_base + row['id'],'kalani.mahesh.de@gmail.com')
+        #send_email(url_base + row['id'],'kalani.mahesh.de@gmail.com')
         #print(url_base + row['id'],'tuuri.matias@gmail.com')
         count_matias = count_matias + 1
 
