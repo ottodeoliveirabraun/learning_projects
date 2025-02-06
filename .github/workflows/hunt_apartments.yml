@@ -32,8 +32,10 @@ jobs:
            "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=infisical" | jq   
 
       - name: Authenticate with Infisical using OIDC
+        env:
+         INFISICAL_AUTH_METHOD: "oidc"
         run: |
-         infisical auth login --identity "github-oidc" --no-interactive
+         infisical auth login --identity "machine" --no-interactive
 
       - name: Retrieve Secrets from Infisical
         run: |
