@@ -43,8 +43,8 @@ jobs:
           pip install -r requirements.txt
           
      - name: execute deuwo # run python scrip        
-       run: python deuwo.py
+       run: python apartment_hunt/deuwo.py
         
      - name: execute howoge # run python scrip        
-       run: python howoge.py
+       run: python apartment_hunt/howoge.py
         
