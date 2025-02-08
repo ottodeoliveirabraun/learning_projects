@@ -8,7 +8,7 @@ from Gsheet import read
 
 import datetime
 
-def dropping_distant_columns(full_df: pd.DataFrame) -> pd.Dataframe:
+def dropping_distant_columns(full_df: pd.DataFrame) -> pd.DataFrame:
   return full_df.drop(['images',
                         'titel',
                         'tour_link_360',
