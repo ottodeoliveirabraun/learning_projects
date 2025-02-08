@@ -1,8 +1,7 @@
+deps:
+	python -m pip install --upgrade pip
+	pip install -r requirements.txt
 
-deps:  
-      python -m pip install --upgrade pip
-      pip install -r requirements.txt
-
-test: 
-      pip install pytest pytest-md pytest-emoji
-      python -m pytest tests/ --cov-report term --cov-report xml:coverage.xml --cov=.
+test:
+	pip install pytest pytest-md pytest-emoji
+	python -m pytest tests/ --cov-report term --cov-report xml:coverage.xml --cov=.
