@@ -18,6 +18,11 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9' # install the python version needed    
+
       - name: Compile Code
         run: |
           python -m pip install --upgrade pip
