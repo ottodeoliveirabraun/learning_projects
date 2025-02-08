@@ -8,6 +8,17 @@ from Gsheet import read
 
 import datetime
 
+def dropping_distant_columns(full_df: pd.DataFrame) -> pd.Dataframe:
+  return full_df.drop(['images',
+                        'titel',
+                        'tour_link_360',
+                        'wrk_id',
+                        'land',
+                        'vermarktungsart_miete',
+                        'has_video',
+                        'preview_img_url',
+                        ], axis = 1)
+
 url = "https://www.wohnraumkarte.de/api/getImmoList?rentType=miete&city=Berlin&immoType=wohnung&minRooms=Beliebig&floor=Beliebig&bathtub=0&bathwindow=0&bathshower=0&furnished=0&kitchenEBK=0&toiletSeparate=0&disabilityAccess=egal&seniorFriendly=0&balcony=egal&subsidizedHousingPermit=egal&limit=150&offset=0&orderBy=dist_asc&userCookieValue=37cdf01355c3a9e20992dae5340c614e3c1c7b48&dataSet=deuwo"
 
 payload = {}
@@ -38,21 +49,11 @@ response = requests.request("POST", url, headers=headers, data=payload)
 data = response.json()
 #normalize the json data into a dataframe object and to some cleaning
 data_df = pd.DataFrame(data["results"])
-data_df = data_df.drop(['images',
-                        'titel',
-                        'tour_link_360',
-                        'wrk_id',
-                        'land',
-                        'vermarktungsart_miete',
-                        'has_video',
-                        'preview_img_url',
-                        ], axis = 1)
+data_df = dropping_distant_columns(data_df)
 
 #print(data_df)
-
+# From here there are some minor column transformations that are needed since these fields are not longer available
 data_df['date'] = datetime.datetime.now().strftime("%d/%m/%Y")
-
-
 
 data_df['requiresQualificationCertificate'] = data_df['slug'].str.contains(r'\(wbs\)', na=False).astype(int)
 
