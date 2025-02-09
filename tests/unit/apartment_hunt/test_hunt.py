@@ -3,6 +3,12 @@ import pytest
 from apartment_hunt.deuwo import dropping_distant_columns
 
 
+#send email was making the unit_test fail, this is a quick fix
+import sys
+from unittest.mock import MagicMock
+sys.modules['send_email'] = MagicMock()
+
+
 def test_dropping_distant_columns():
     # Create a dummy DataFrame
     data = {
