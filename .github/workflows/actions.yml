@@ -32,6 +32,7 @@ jobs:
       - name: Decode and Save Google Service Account JSON
         run: |
           echo "$GOOGLE_SERVICE_ACCOUNT_JSON_2" > apartment_hunt/keys.json
+          echo "$GOOGLE_SERVICE_ACCOUNT_JSON_2" > keys.json
 
       - name: setup python
         uses: actions/setup-python@v4
