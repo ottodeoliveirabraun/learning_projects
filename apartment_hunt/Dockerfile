@@ -8,13 +8,8 @@ ENV PYTHONUNBUFFERED=1
 
 # Set working dir inside the container
 WORKDIR /app
+COPY deuwo.py
 
-
-# COPY main.py /app
-# COPY sql_queries/. /app
-# COPY constants.py /app/
-# COPY requirements.txt /app
-# Copy the whole content
 COPY . /app
 
 COPY ../requirements.txt /app/requirements.txt
