@@ -8,7 +8,7 @@ ENV PYTHONUNBUFFERED=1
 
 # Set working dir inside the container
 WORKDIR /app
-COPY deuwo.py
+COPY deuwo.py /app
 
 COPY . /app
 
