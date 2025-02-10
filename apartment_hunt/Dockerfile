@@ -10,7 +10,7 @@ ENV PYTHONUNBUFFERED=1
 WORKDIR /app
 #COPY deuwo.py /app
 
-COPY apartment_hunt/. /app
+COPY apartment_hunt /app/apartment_hunt
 
 COPY ../requirements.txt /app/requirements.txt
 
