@@ -17,4 +17,4 @@ COPY ../keys.json /app/keys.json
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-CMD ["python", "-m", "apartment_hunt.deuwo.py"]
+CMD ["python", "-m", "apartment_hunt.deuwo"]
