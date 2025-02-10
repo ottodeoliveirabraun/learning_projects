@@ -13,6 +13,7 @@ WORKDIR /app
 COPY apartment_hunt /app/apartment_hunt
 
 COPY ../requirements.txt /app/requirements.txt
+COPY ../keys.json /app/keys.json
 
 RUN pip install --no-cache-dir -r requirements.txt
 
