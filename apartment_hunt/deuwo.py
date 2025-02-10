@@ -162,7 +162,7 @@ merge_df['email.sent_y'] = merge_df['email.sent_y'].replace(np.nan,0)
 
 for index, row in merge_df.iterrows():
     if row['email.sent_y'] == 0 and row['main_flag'] == 1:
-        send_email(url_base + row['id'],'sophiagarmatsch@gmail.com')
+        #send_email(url_base + row['id'],'sophiagarmatsch@gmail.com')
         #print(url_base + row['id'],'sophiagarmatsch@gmail.com')
         count_bubu = count_bubu + 1 
     if row['email.sent_y'] == 0 and row['matias_flag'] == 1:    
