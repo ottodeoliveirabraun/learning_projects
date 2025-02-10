@@ -4,4 +4,5 @@ deps:
 
 test:
 	pip install pytest pytest-md pytest-emoji pytest-cov
+	export PYTHONPATH=$PWD
 	python -m pytest tests/ --cov-report term --cov-report xml:coverage.xml --cov=.
