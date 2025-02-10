@@ -49,7 +49,7 @@ jobs:
           make test
 
       - name: Build Docker Image
-        run: docker build -t my-app:${{ github.sha }} .
+        run: docker build -t my-app:${{ github.sha }} -f docker/Dockerfile .
 
       - name: Run Unit Tests Inside Container
         run: docker run --rm my-app:${{ github.sha }} mvn test
