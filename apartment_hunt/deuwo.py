@@ -2,9 +2,9 @@
 import requests
 import pandas as pd
 import numpy as np
-from apartment_hunt.Gsheet import write
-from apartment_hunt.Gsheet import read
-from apartment_hunt.send_email import send_email
+from Gsheet import write
+from Gsheet import read
+from send_email import send_email
 
 import datetime
 
