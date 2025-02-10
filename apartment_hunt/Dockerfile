@@ -16,4 +16,4 @@ COPY ../requirements.txt /app/requirements.txt
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-CMD ["python", "deuwo.py"]
+CMD ["python", "-m", "apartment_hunt.deuwo.py"]
