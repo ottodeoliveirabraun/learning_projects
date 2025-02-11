@@ -41,8 +41,8 @@ jobs:
        run: make deps
           
      - name: execute deuwo # run python scrip        
-       run: python -m apartment_hunt/deuwo.py
+       run: python -m apartment_hunt/deuwo
         
      - name: execute howoge # run python scrip        
-       run: python -m apartment_hunt/howoge.py
+       run: python -m apartment_hunt/howoge
         
