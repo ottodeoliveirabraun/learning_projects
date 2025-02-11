@@ -100,7 +100,8 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_HUB_NAME }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
-
+          
+        #Here the image is being build for the seccond time for learning purposes
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v2
         with:
