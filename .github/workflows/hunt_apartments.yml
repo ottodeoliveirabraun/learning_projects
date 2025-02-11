@@ -41,8 +41,10 @@ jobs:
        run: make deps
           
      - name: execute deuwo # run python script      
-       run: python apartment_hunt/deuwo.py
-        
+       run: |
+        PYTHONPATH=$(pwd) python apartment_hunt/deuwo.py
+           
      - name: execute howoge # run python script       
-       run: python apartment_hunt/howoge.py
+       run: |
+        PYTHONPATH=$(pwd) python apartment_hunt/howoge.py
         
