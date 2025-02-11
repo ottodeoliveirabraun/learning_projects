@@ -110,5 +110,5 @@ jobs:
           build-args: |
             VERSION=${{ env.new_version }}
           tags: |
-            obraunnn/apt_hunt:${{ env.new_version }}
+            obraunnn/apt_hunt:${{ steps.version.outputs.new_version }}
             obraunnn/apt_hunt:latest
