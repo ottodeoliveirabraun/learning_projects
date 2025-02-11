@@ -110,5 +110,5 @@ jobs:
           build-args: |
             VERSION=${{ env.new_version }}
           tags: |
-            my-dockerhub-username/my-app:${{ env.new_version }}
-            my-dockerhub-username/my-app:latest
+            obraunnn/apt_hunt:${{ env.new_version }}
+            obraunnn/apt_hunt:latest
