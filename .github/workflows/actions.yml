@@ -53,6 +53,9 @@ jobs:
     needs: build-and-test
     runs-on: ubuntu-latest
     steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
     
       - name: Build Docker Image
         run: docker build -t my-app:${{ github.sha }} -f apartment_hunt/Dockerfile .
