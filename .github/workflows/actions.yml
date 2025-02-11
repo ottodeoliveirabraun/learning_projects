@@ -1,4 +1,4 @@
-name: Build, Test, and Push Docker Image
+name: Build, Test, and Release
 
 on:
   push:
@@ -47,7 +47,13 @@ jobs:
         run: |
           make deps
           make test
-
+          
+  release:
+    name: Release
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    steps:
+    
       - name: Build Docker Image
         run: docker build -t my-app:${{ github.sha }} -f apartment_hunt/Dockerfile .
 
@@ -63,6 +69,10 @@ jobs:
       - name: Stop and Remove Container
         run: docker stop my-running-app && docker rm my-running-app
 
+      - name: Generate PR version
+        id: version
+        run: echo "new_version=PR-${{ github.event.pull_request.number }}" >> "$GITHUB_OUTPUT"
+
       # Tests inside the container might be implemented later
       #- name: Run Unit Tests Inside Container
       #  run: docker run --rm my-app:${{ github.sha }} mvn test
@@ -73,7 +83,14 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_NAME }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
 
-      - name: Push Docker Image
-        run: |
-          docker tag my-app:${{ github.sha }} my-dockerhub-username/my-app:latest
-          docker push my-dockerhub-username/my-app:latest
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: Dockerfile
+          push: true
+          build-args: |
+            VERSION=${{ env.new_version }}
+          tags: |
+            my-dockerhub-username/my-app:${{ env.new_version }}
+            my-dockerhub-username/my-app:latest
