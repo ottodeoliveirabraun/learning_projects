@@ -40,9 +40,9 @@ jobs:
      - name: install python packages
        run: make deps
           
-     - name: execute deuwo # run python scrip        
-       run: python -m apartment_hunt/deuwo
+     - name: execute deuwo # run python script      
+       run: python apartment_hunt/deuwo.py
         
-     - name: execute howoge # run python scrip        
-       run: python -m apartment_hunt/howoge
+     - name: execute howoge # run python script       
+       run: python apartment_hunt/howoge.py
         
