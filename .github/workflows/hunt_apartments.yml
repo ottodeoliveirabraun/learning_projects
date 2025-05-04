@@ -22,8 +22,8 @@ jobs:
      #   project-slug: "learning-repo-tx-xr"
      #   domain: "https://eu.infisical.com"
 
-     #- name: checkout repo content
-     #  uses: actions/checkout@v2 # checkout the repository content to github runner
+     - name: checkout repo content
+       uses: actions/checkout@v2 # checkout the repository content to github runner
 
      #- name: Install Infisical CLI
      #  run: npm install -g infisical
