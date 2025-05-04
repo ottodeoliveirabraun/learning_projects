@@ -21,7 +21,7 @@ jobs:
           domain: "https://eu.infisical.com"
 
       - name: Install Infisical CLI
-        run: npm install -g infisical
+        run: npm install -g @infisical/cli
 
       - name: Decode and Save Google Service Account JSON
         run: |
