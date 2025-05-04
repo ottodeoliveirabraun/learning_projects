@@ -14,23 +14,23 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-     - uses: Infisical/secrets-action@v1.0.7
-       with:
-        client-id: ${{ secrets.INFISICAL_CLIENT_ID }} # Update this to your own Github references
-        client-secret: ${{ secrets.INFISICAL_SECRET }} # Update this to your own Github references
-        env-slug: "prod"
-        project-slug: "learning-repo-tx-xr"
-        domain: "https://eu.infisical.com"
+     #- uses: Infisical/secrets-action@v1.0.7
+     #  with:
+     #   client-id: ${{ secrets.INFISICAL_CLIENT_ID }} # Update this to your own Github references
+     #   client-secret: ${{ secrets.INFISICAL_SECRET }} # Update this to your own Github references
+     #   env-slug: "prod"
+     #   project-slug: "learning-repo-tx-xr"
+     #   domain: "https://eu.infisical.com"
 
-     - name: checkout repo content
-       uses: actions/checkout@v2 # checkout the repository content to github runner
+     #- name: checkout repo content
+     #  uses: actions/checkout@v2 # checkout the repository content to github runner
 
-     - name: Install Infisical CLI
-       run: npm install -g infisical
+     #- name: Install Infisical CLI
+     #  run: npm install -g infisical
 
-     - name: Decode and Save Google Service Account JSON
-       run: |
-          echo "$GOOGLE_SERVICE_ACCOUNT_JSON_2" > keys.json
+     #- name: Decode and Save Google Service Account JSON
+     #  run: |
+     #     echo "$GOOGLE_SERVICE_ACCOUNT_JSON_2" > keys.json
 
      - name: setup python
        uses: actions/setup-python@v4
