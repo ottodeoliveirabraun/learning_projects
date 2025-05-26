@@ -1,7 +1,9 @@
-from dataclasses import asdict
+from dataclasses import asdict, fields
+import datetime
 import pandas as pd
 from typing import List
-from ..models.apartment import ApartmentListing  
+from ..models.apartment import ApartmentListing
+from ..notifications.distribuitor import NotifierManager  
 from ..Gsheet import read, write
 from ..api_clients import deuwo,howoge
 import numpy as np
@@ -14,7 +16,7 @@ class Processor():
     def listings_to_df(self, listings: List[ApartmentListing]) -> pd.DataFrame:
         return pd.DataFrame([asdict(listing) for listing in listings])
     
-    def df_to_listings(df: pd.DataFrame) -> List[ApartmentListing]:
+    def df_to_listings(self, df: pd.DataFrame) -> List[ApartmentListing]:
         return [ApartmentListing(**row) for row in df.to_dict(orient='records')]
     
     def transformations(self):
@@ -27,100 +29,88 @@ class Processor():
         old_data_df.columns = old_data_df.iloc[0]
         old_data_df = old_data_df[1:]
         #add the binary saying that it is not currently available
-        old_data_df['currently_available'] = '0'
-        #adjustment to the data types coming from gsheets
-        for x in old_data_df.columns:
-            #print(x, [old_data_df[x]])
+        
+
+        # adjustment to the data types coming from gsheets
+        # Build dtype mapping from ApartmentListing
+        """ for x in old_data_df.columns:
+            #sprint(x, [old_data_df[x]])
             old_data_df[x]=old_data_df[x].str.replace(',', '.')
             #print(x, [old_data_df[x]])
-            old_data_df[x]=old_data_df[x].astype(new_data_df[x].dtypes.name)
+            old_data_df[x]=old_data_df[x].astype(new_data_df[x].dtypes.name) """
 
-        merging_columns = ['id',
-                           'address',
-                           'zipcode',
-                           'hood',
-                           'price',
-                           'size',
-                           'rooms',
-                           'wbs',
-                           'url',
-                           'latitude',
-                           'longitude',
-                           'source']
+        old_data_df = self.listings_to_df(self.df_to_listings(old_data_df))
+        
+        print(self.new_apartments[1].source)
 
-        merge_df = new_data_df.merge(old_data_df, how = 'left', on = merging_columns)
+        old_data_df['currently_available'] = old_data_df['currently_available'].where(old_data_df['source'] == self.new_apartments[1].source, 0)
 
-        #zipcode logic not working yet
-        plz_df = pd.DataFrame(read('plz'))
+        #old_data_df['currently_available'] = 0
+        
+        dtype_map = {f.name: f.type for f in fields(ApartmentListing)}
 
-        #replaces the columns by the first row 
-        plz_df.columns = plz_df.iloc[0]
-        plz_df = plz_df[1:]
-        plz_df.rename(columns={'plz_code':'zipcode'}, inplace=True)
+        for col, target_type in dtype_map.items():
+            if col not in old_data_df.columns:
+                continue
 
-        #print(plz_df) 
-
-        merge_df = merge_df.merge(plz_df, how = 'left', on = 'zipcode')
-
-        merge_df = merge_df.drop_duplicates(subset=['id'],ignore_index=True)
-
-        #each new columns added to the merged data base if the filter responsible for sending the emails
-        merge_df['main_flag'] = [1 if x < 1000 and y > 70 and z == 0 and k == '1' else 0 for (x,y,z,k) in 
-                            zip(merge_df['price'],merge_df['size'],merge_df['wbs'],merge_df['Main'])]
-
-        merge_df['matias_flag'] = [1 if x < 900 and y > 59 and z == 0 and w == '1' else 0 for (x,y,z,w) in 
-                            zip(merge_df['price'],merge_df['size'],merge_df['wbs'],merge_df['Matias'])]
-
-        merge_df['date_y'] = merge_df['date_y'].replace(np.nan,0)
-
-        merge_df['date'] = [y if y != 0 else x for (x,y) in 
-                            zip(merge_df['date_x'],merge_df['date_y'])]                
-
-        url_base = 'https://www.deutsche-wohnen.com/expose/object/'
-
-        count_matias = 0
-        count_bubu = 0
-
-        #the recently joined NULL values coming from the old_data are replaced by 0
-        merge_df['email_sent_y'] = merge_df['email_sent_y'].replace(np.nan,0)
-
-        for index, row in merge_df.iterrows():
-            if row['email_sent_y'] == 0 and row['main_flag'] == 1:
-                send_email(url_base + row['id'],'sophiagarmatsch@gmail.com')
-                print(url_base + row['id'],'sophiagarmatsch@gmail.com')
-                count_bubu = count_bubu + 1 
-            if row['email_sent_y'] == 0 and row['matias_flag'] == 1:    
-                #send_email(url_base + row['id'],'kalani.mahesh.de@gmail.com')
-                #print(url_base + row['id'],'tuuri.matias@gmail.com')
-                count_matias = count_matias + 1
-
-        print (str(count_bubu) + ' new flat(s) found for bubu')
-        print (str(count_matias) + ' new flat(s) found for maBOIIIIII')
-                
-        print(merge_df.columns.tolist())
+            try:
+                # Try convert to the appropriate type
+                if target_type == int:
+                    old_data_df[col] = pd.to_numeric(old_data_df[col], errors='coerce').fillna(0).astype(int)
+                elif target_type == float:
+                    old_data_df[col] = (
+                        old_data_df[col]
+                        .astype(str)
+                        .str.replace(',', '.', regex=False)
+                        .replace('', '0')
+                    )
+                    old_data_df[col] = pd.to_numeric(old_data_df[col], errors='coerce').fillna(0.0)
+                else:
+                    # Fallback
+                    old_data_df[col] = old_data_df[col].astype(str)
+            except Exception as e:
+                print(f"Error casting column {col}: {e}")
 
 
-        #remove the extra columns to enable adding it to the database
-        merge_df = merge_df.drop(['email_sent_x','currently_available_y','date_x','date_y','Main','Matias','main_flag','matias_flag'], axis = 1)
-        #turns on the email sent button to avoid sending it again
-        merge_df['email_sent_y'] = 1
-        #rename the columns coming from the merge to allow the connection to the database
-        merge_df.rename(columns={'currently_available_x': 'currently_available', 'email_sent_y': 'email_sent'}, inplace=True)
+        # Set index to the merge key (use a subset if needed, but assume 'id' is unique enough)
+        new_data_df.set_index('id', inplace=True)
+        old_data_df.set_index('id', inplace=True)
 
-        #concatenate the old data with the new data and remove the duplicates
-        concatenation = pd.concat([merge_df,old_data_df],ignore_index=True)
-        deduplication = concatenation.drop_duplicates(subset=['id'],ignore_index=True)
+        # Use combine_first to get values from new_data_df first, then old_data_df
+        merge_df = old_data_df.combine_first(new_data_df)
 
-        #print(deduplication)
+        #email notification goes here
+        NotifierManager(self.df_to_listings(merge_df))
+        merge_df['email_sent'] = 1
 
-        #prepares the data to go to the Gsheet
-        final = deduplication.values.tolist()
 
-        #call the function to update Gsheet
-        write(final,"Apartments!A2")
+        # Reset index to return 'id' as a column
+        merge_df.reset_index(inplace=True)
 
+        #print(merge_df)
+
+        write(merge_df.replace(np.nan, '').values.tolist(), "Apartments!A2")
         print('Apartments updated!')
 
 
-Processor(howoge.howogeAPIClient().fetch_data()).transformations()
-Processor(deuwo.deuwoAPIClient().fetch_data()).transformations()
+        """         
+        # Load PLZ and clean
+        plz_df = pd.DataFrame(read('plz'))
+        plz_df.columns = plz_df.iloc[0]
+        plz_df = plz_df[1:]
+        plz_df.rename(columns={'plz_code': 'zipcode'}, inplace=True)
+
+        # Merge PLZ on zipcode using combine_first
+        merge_df = merge_df.set_index('zipcode')
+        plz_df = plz_df.set_index('zipcode')
+        merge_df = merge_df.combine_first(plz_df)
+        merge_df.reset_index(inplace=True) """
+
+        # Email sending logic
+        # deuwo URL needs fixing 
+        #url_base = 'https://www.deutsche-wohnen.com/expose/object/'
+
+
+
+Processor(deuwo.DeuwoAPIClient().fetch_data()).transformations()
+Processor(howoge.HowogeAPIClient().fetch_data()).transformations()
