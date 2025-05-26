@@ -137,7 +137,7 @@ print(merge_df)
 for index, row in merge_df.iterrows():
     #print(row['uid'], row['email.sent_y'], row['main_flag'], row['matias_flag'])
     if row['email.sent_y'] == 1 and row['main_flag'] == 1:
-        send_email(url_base + row['link'],'sophiagarmatsch@gmail.com')
+        #send_email(url_base + row['link'],'sophiagarmatsch@gmail.com')
         #print(url_base + row['link'],'sophiagarmatsch@gmail.com')
         count_bubu = count_bubu + 1 
     if row['email.sent_y'] == 1 and row['matias_flag'] == 1:    
