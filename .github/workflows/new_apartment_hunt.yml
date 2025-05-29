@@ -1,4 +1,4 @@
-name: run real_state
+name: run NEW real_state
 
 on:
   schedule:
