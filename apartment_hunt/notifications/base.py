@@ -22,13 +22,13 @@ class Notifier():
 
         #self.processing_notifications()
 
-    def send_email(self):
+    def send_email(self, url):
         email_sender = 'obraunnn@gmail.com'
         password = 'djbumchmwzvueatu'
         email_receiver = self.user_email
 
         subject = 'New apartment found'
-        body = ApartmentListing.url
+        body = url
 
         em = EmailMessage()
         em['From'] = email_sender
@@ -51,6 +51,6 @@ class Notifier():
             and apartment.wbs <= self.wbs_filter
             and apartment.currently_available == 1
             and apartment.email_sent == 0):
-                self.send_email()
+                self.send_email(apartment.url)
                 counter = counter + 1
         print(str(counter) + " apartments emailed to " + self.user_email)

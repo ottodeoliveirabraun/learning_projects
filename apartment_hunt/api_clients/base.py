@@ -10,9 +10,9 @@ class APIclient(ABC):
     def post(self):
         
         response = requests.get(self.url, params=self.payload, headers=self.headers)
-        print(response.url)  # This will show the full request URL with params
-        print("json response BELLOW-------------------")
-        print(response.json())  # Assuming the response is in JSON format
+        #print(response.url)  # This will show the full request URL with params
+        #print("json response BELLOW-------------------")
+        #print(response.json())  # Assuming the response is in JSON format
         #get the response from the website
         response = requests.request("POST", self.url, headers=self.headers, data=self.payload)
         #get the data from the response in json

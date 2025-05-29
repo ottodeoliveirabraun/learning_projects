@@ -3,10 +3,11 @@ import pandas as pd
 import numpy as np
 from dataclasses import fields
 import datetime
+import logging
 from ..models.apartment import ApartmentListing
 
 
-class howogeAPIClient(APIclient):
+class HowogeAPIClient(APIclient):
     def __init__(self):
         url = "https://www.howoge.de/?type=999&tx_howsite_json_list[action]=immoList"
         payload = "tx_howsite_json_list%5Bpage%5D=1&tx_howsite_json_list%5Blimit%5D=12&tx_howsite_json_list%5Blang%5D=&tx_howsite_json_list%5Brent%5D=&tx_howsite_json_list%5Barea%5D=&tx_howsite_json_list%5Brooms%5D=egal&tx_howsite_json_list%5Bwbs%5D=all-offers"
@@ -65,9 +66,9 @@ class howogeAPIClient(APIclient):
         data_df['wbs'] = self.wbs_to_int(data_df['wbs'])
         data_df['date'] = datetime.datetime.now().strftime("%d/%m/%Y")
 
-        print(data_df)
+        #print(data_df)
 
-        print(data_df.columns.tolist())
+        #print(data_df.columns.tolist())
 
         
 
@@ -85,6 +86,8 @@ class howogeAPIClient(APIclient):
         data_df.rename(columns={'address': 'address'}, inplace=True)
         data_df.rename(columns={'zipcode': 'zipcode'}, inplace=True)
         data_df.rename(columns={'link': 'url'}, inplace=True)
+
+        data_df['url'] = 'https://www.howoge.de/' + data_df['url'].astype(str)
 
         #changing data types
         data_df['id'] = data_df['id'].astype(str)
@@ -112,7 +115,7 @@ class howogeAPIClient(APIclient):
         # Instantiate dataclass safely
         apartments = [ApartmentListing(**row) for row in filtered_rows]
         
-        #print(apartments)
+        logging.info("Howoge pulled.")
         return apartments
 
 
