@@ -1,0 +1,46 @@
+name: run real_state
+
+on:
+  schedule:
+    - cron: '30 5-19/6 * * *' # At minute 0 past every 2nd hour
+  workflow_dispatch:
+
+# Add the required permissions for OIDC authentication
+permissions:
+  id-token: write   # Required to request the JWT from GitHub
+  contents: read    # Needed to access the repository contents
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+     - uses: Infisical/secrets-action@v1.0.7
+       with:
+        client-id: ${{ secrets.INFISICAL_CLIENT_ID }} # Update this to your own Github references
+        client-secret: ${{ secrets.INFISICAL_SECRET }} # Update this to your own Github references
+        env-slug: "prod"
+        project-slug: "learning-repo-tx-xr"
+        domain: "https://eu.infisical.com"
+
+     - name: checkout repo content
+       uses: actions/checkout@v2 # checkout the repository content to github runner
+
+     - name: Install Infisical CLI
+       run: npm install -g @infisical/cli
+
+     - name: Decode and Save Google Service Account JSON
+       run: |
+          echo "$GOOGLE_SERVICE_ACCOUNT_JSON_2" > keys.json
+
+     - name: setup python
+       uses: actions/setup-python@v4
+       with:
+          python-version: '3.9' # install the python version needed
+          
+     - name: install python packages
+       run: make deps
+          
+     - name: execute deuwo # run python script      
+       run: |
+        PYTHONPATH=$(pwd) python -m learning_projects.apartment_hunt.app
+        
