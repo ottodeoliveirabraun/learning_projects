@@ -42,5 +42,5 @@ jobs:
           
      - name: execute deuwo # run python script      
        run: |
-        PYTHONPATH=$(pwd) python -m learning_projects.apartment_hunt.app
+        PYTHONPATH=$(pwd) python -m apartment_hunt.app
         
