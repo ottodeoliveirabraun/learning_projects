@@ -2,11 +2,12 @@ from .base import APIclient
 import pandas as pd
 import numpy as np
 from dataclasses import fields
+import logging
 import datetime
 from ..models.apartment import ApartmentListing
 
 
-class deuwoAPIClient(APIclient):
+class DeuwoAPIClient(APIclient):
     def __init__(self):
         url = "https://www.wohnraumkarte.de/api/getImmoList?rentType=miete&city=Berlin&immoType=wohnung&minRooms=Beliebig&floor=Beliebig&bathtub=0&bathwindow=0&bathshower=0&furnished=0&kitchenEBK=0&toiletSeparate=0&disabilityAccess=egal&seniorFriendly=0&balcony=egal&subsidizedHousingPermit=egal&limit=150&offset=0&orderBy=dist_asc&userCookieValue=37cdf01355c3a9e20992dae5340c614e3c1c7b48&dataSet=deuwo"
         payload = {}
@@ -34,7 +35,6 @@ class deuwoAPIClient(APIclient):
         return full_df.drop(['images',
                         'titel',
                         'tour_link_360',
-                        'wrk_id',
                         'land',
                         'vermarktungsart_miete',
                         'has_video',
@@ -46,6 +46,7 @@ class deuwoAPIClient(APIclient):
 
         #normalize the json data into a dataframe object and to some cleaning
         data_df = pd.DataFrame(data["results"])
+
         data_df = self.dropping_distant_columns(data_df)
 
         #print(data_df)
@@ -56,6 +57,10 @@ class deuwoAPIClient(APIclient):
 
         data_df['heatingCostsIncluded'] = 0            #data_df['heatingCostsIncluded'].astype(int)  heating costs field was removed
         data_df['level'] = 999
+
+        url_base = 'https://www.deutsche-wohnen.com/mieten/mietangebote/'
+
+        data_df['url'] = url_base + data_df['slug'].astype(str) + '-' + data_df['wrk_id'].astype(str)
 
         #renaming columns to adhere to old standard
         data_df.rename(columns={'objektnr_extern': 'id'}, inplace=True)
@@ -71,6 +76,7 @@ class deuwoAPIClient(APIclient):
         #changing data types
         data_df['price'] = data_df['price'].astype(float)
         data_df['size'] = data_df['size'].astype(float)
+        data_df['rooms'] = data_df['rooms'].astype(float)
         data_df['latitude'] = data_df['latitude'].astype(str)
         data_df['longitude'] = data_df['longitude'].astype(str)
         
@@ -79,8 +85,6 @@ class deuwoAPIClient(APIclient):
         data_df['currently_available'] = 1
         data_df['email_sent'] = 0
         data_df['source'] = 'Deutsche Wohnen'
-        print('pre-wow')
-        print(data_df)
 
         # Get valid field names from the dataclass
         valid_fields = {f.name for f in fields(ApartmentListing)}
@@ -93,7 +97,7 @@ class deuwoAPIClient(APIclient):
 
         # Instantiate dataclass safely
         apartments = [ApartmentListing(**row) for row in filtered_rows]
-
+        logging.info("Deutsche Wohnen pulled.")
         return apartments
 
 

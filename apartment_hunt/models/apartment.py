@@ -11,7 +11,7 @@ class ApartmentListing:
     price: float = 0.0
     size: float = 0.0
     rooms: float = 0.0
-    wbs: str = ""
+    wbs: int = 0
     url: str = ""
     latitude: str = ""
     longitude: str = ""
