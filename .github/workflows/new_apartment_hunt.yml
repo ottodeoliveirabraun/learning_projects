@@ -2,7 +2,7 @@ name: run NEW real_state
 
 on:
   schedule:
-    - cron: '30 5-19/6 * * *' # At minute 0 past every 2nd hour
+    - cron: '30 5-19/3 * * *' # At minute 0 past every 2nd hour
   workflow_dispatch:
 
 # Add the required permissions for OIDC authentication
@@ -40,7 +40,7 @@ jobs:
      - name: install python packages
        run: make deps
           
-     - name: execute deuwo # run python script      
+     - name: execute apartment hunt # run python script      
        run: |
         PYTHONPATH=$(pwd) python -m apartment_hunt.app
         
